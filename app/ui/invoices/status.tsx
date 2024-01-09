@@ -1,5 +1,6 @@
 import { CheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+// clsx lets us conditionally apply classes based on state or a condition
 
 export default function InvoiceStatus({ status }: { status: string }) {
   return (
