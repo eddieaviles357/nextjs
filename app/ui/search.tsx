@@ -1,10 +1,29 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export default function Search({ placeholder }: { placeholder: string }) {
+  const searchParams = useSearchParams();
+
   function handleSearch(term: string) {
-    console.log(term);
+    const params = new URLSearchParams(searchParams);
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
+    if (term) {
+      params.set('query', term);
+    } else { // no string, delete
+      params.delete('query');
+    }
+    /* ${pathname} is the current path, in this case, "/dashboard/invoices".
+    As the user types into the search bar, params.toString() translates this input into a URL-friendly format.
+    replace(${pathname}?${params.toString()}) updates the URL with the user's search data. 
+    For example, /dashboard/invoices?query=eddie if the user searches for "Eddie".
+    The URL is updated without reloading the page, 
+    thanks to Next.js's client-side navigation (which was learned about in the chapter on navigating between pages).
+    */
+    replace(`${pathname}?${params.toString()}`);
   }
   return (
     <div className="relative flex flex-1 flex-shrink-0">
